@@ -3,10 +3,14 @@ module.exports = {
     devServer: {
         port: 80,
         proxy: {
-            '/api': {
-                target: 'http://localhost:8080/api',
+            '/student': {
+                target: 'http://localhost:8080/student',
                 changeOrigin: true,
-                pathRewrite: {'^/api': "/"}
+                pathRewrite: {'^/student': "/"}
+            },'/major': {
+                target: 'http://localhost:8080/major',
+                changeOrigin: true,
+                pathRewrite: {'^/major': "/"}
             },
         }
     }
