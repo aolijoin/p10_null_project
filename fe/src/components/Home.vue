@@ -5,7 +5,7 @@ export default {
   data() {
     return {}
   }, methods: {
-    clck() {
+    test() {
       this.$axios.post(`/api/hello`).then(res => {
         this.$message.success(res.data)
       })
@@ -16,7 +16,7 @@ export default {
 
 <template>
   <div id="home">
-    <el-button type="primary" @click="clck">点击</el-button>
+    <el-button type="primary" @click="test">点击测试</el-button>
   </div>
 </template>
 
