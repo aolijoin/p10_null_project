@@ -24,9 +24,21 @@ public class Student implements Serializable {
     private String hobby;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
-    private Integer mid;
+    private Long mid;
 
     @TableField(exist = false)
     private String major;
 
+    public Student() {
+    }
+
+    public Student(Long id, String name, Integer age, Integer sex, String hobby, Date birthday, String major) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+        this.hobby = hobby;
+        this.birthday = birthday;
+        this.major = major;
+    }
 }

@@ -9,7 +9,7 @@ export default {
     return {
       title: '饼状图',
       // name: 'Access From',
-      name: '员工管理图',
+      name: '专业分布图',
       pieData: [
         {value: 1048, name: 'Search Engine'},
         {value: 735, name: 'Direct'},
@@ -27,7 +27,7 @@ export default {
       /**
        * 请求返回字段为 value 和 name 的 List的Map集合
        */
-      axios.post(`/api/test`).then(res => {
+      axios.post(`/student/groupMajor`).then(res => {
         let result = res.data.data
         this.pieData = result
         myChart.setOption(

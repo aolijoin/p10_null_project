@@ -14,4 +14,9 @@
             </if>
         </where>
     </select>
+    <select id="groupMajor" resultType="java.util.Map">
+        select tm.name name,count(ts.id) value
+        from db_major.tb_student ts right join db_major.tb_major tm on ts.mid = tm.id
+        group by tm.name
+    </select>
 </mapper>

@@ -13,11 +13,11 @@ export default {
         total: 0,
       },
       majors: [], hobbys: [], multipleSelection: [],
-      query: {}, form: {}, dialogFormVisible: false,
+      query: {name: ''}, form: {}, dialogFormVisible: false,
       model: {
         title: '',
         url: '',
-      }
+      }, dialogVisible: false
     }
   }, methods: {
     handleSizeChange(val) {
@@ -95,6 +95,32 @@ export default {
           });
         });
       }
+    }, download() {
+      // axios.post(`/student/download`, this.query).then(res => {      })
+      window.location.href = `/student/download?name=${this.query.name}`
+    }, goPieImages() {
+      this.$router.push('pie')
+    }, goBarImages() {
+      this.$router.push('bar')
+    }, handleClose() {
+
+    }, uploadPage() {
+      this.dialogVisible = true
+    }, upload() {
+      console.log()
+    }, beforeAvatarUpload(file) {
+      //上传前执行
+      this.$message.info('文件开始上传')
+    }, handleAvatarSuccess(res, file) {
+      //上传成功执行
+      if (res) {
+        this.dialogVisible = false
+        this.getTableData()
+        this.$message.success('导入成功')
+      } else {
+        this.$message.error('导入失败')
+      }
+
     }
 
   }, created() {
@@ -106,10 +132,16 @@ export default {
 
 <template>
   <div id="home">
-    <el-input v-model="query.name" style="width: 200px"></el-input>
-    <el-button @click="getTableData" type="primary">查询</el-button>
-    <el-button @click="addPage" type="primary">添加</el-button>
-    <el-button @click="deleteList" type="primary">批量删除</el-button>
+    <div>
+      <el-input v-model="query.name" style="width: 200px"></el-input>
+      <el-button @click="getTableData" type="primary">查询</el-button>
+      <el-button @click="addPage" type="primary">添加</el-button>
+      <el-button @click="deleteList" type="danger">批量删除</el-button>
+      <el-button @click="download" type="primary">导出数据</el-button>
+      <el-button @click="goPieImages" type="primary">饼状图</el-button>
+      <el-button @click="goBarImages" type="primary">线型图和柱状图</el-button>
+      <el-button @click="uploadPage" type="primary">导入数据</el-button>
+    </div>
 
     <el-table :data="page.tableData" @selection-change="handleSelectionChange">
       <el-table-column type="selection"></el-table-column>
@@ -174,11 +206,55 @@ export default {
         <el-button type="primary" @click="saveStudent">确 定</el-button>
       </div>
     </el-dialog>
+    <!--导入-->
+    <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose">
+      <el-upload
+          class="upload-demo"
+          action="/student/upload"
+          multiple
+          :limit="3"
+          :on-success="handleAvatarSuccess">
+        <el-button size="small" type="primary">点击上传</el-button>
+<!--        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+      </el-upload>
 
-
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+<!--        <el-button type="primary" @click="upload">确 定</el-button>-->
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <style>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
 
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>
