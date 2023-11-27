@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jiyun.mapper.BorrowMapper">
+
+    <select id="getTableInfo" resultType="cn.jiyun.pojo.Borrow">
+        select tbm.*, tu.name user, tb.name book
+        from tb_borrow tbm
+        left join tb_user tu on tbm.uid = tu.id
+        left join tb_book tb on tbm.bid = tb.id
+        <where>
+            and 1 = 1
+            <if test="uid!=null and uid!=2">
+                and tu.id = #{uid}
+            </if>
+        </where>
+
+    </select>
+</mapper>
