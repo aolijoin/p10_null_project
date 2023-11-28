@@ -8,6 +8,7 @@ import * as echarts from 'echarts'
 import axios from "axios";
 
 Vue.prototype.$axios = axios
+axios.defaults.baseUrl = 'http://172.26.0.244:8080/'
 Vue.prototype.$echarts = echarts
 Vue.use(ElementUI)
 Vue.config.productionTip = false

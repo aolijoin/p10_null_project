@@ -12,12 +12,12 @@ export default {
         if (result.code === 200) {
           let data = result.data.user
           let msg = result.data.borrow
+          console.log(msg)
+          this.$router.push({path: '/home', query: {name: data.username, id: data.id}})
           if (msg != null) {
             alert(data.name + '您于' + msg.createTime + '借阅一本书,请及时归还 ！！！')
           }
           this.$message.success('欢迎回来: ' + data.name)
-          console.log(msg)
-          this.$router.push({path: '/home', query: {name: data.username, id: data.id}})
         } else {
           this.$message.error(result.msg)
         }
