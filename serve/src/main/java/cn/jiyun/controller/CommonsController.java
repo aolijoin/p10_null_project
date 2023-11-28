@@ -20,6 +20,25 @@ public class CommonsController {
     @Resource
     private SsqMapper ssqMapper;
 
+    @RequestMapping("/getSsq")
+    public Result getSsq(Integer pid) {
+        LambdaQueryWrapper<Ssq> wrapper = new LambdaQueryWrapper<>();
+        if (pid == null) {
+            wrapper.isNull(Ssq::getPid);
+        } else {
+            wrapper.eq(Ssq::getPid, pid);
+        }
+        List<Ssq> ssqs = ssqMapper.selectList(wrapper);
+
+        return Result.success(ssqs);
+    }
+
+    @RequestMapping("/getSsqName/{id}")
+    public String getSsqName(@PathVariable("id") Integer id) {
+        Ssq ssq = ssqMapper.selectById(id);
+        return ssq.getName();
+    }
+
     @RequestMapping("getFormsAll")
     public Result getFormsAll() {
         return Result.success(formsMapper.selectList(null));

@@ -6,30 +6,31 @@
         <el-input v-model="query.xname" placeholder="线索内容"></el-input>
       </el-form-item>
       <el-form-item label="省市区:">
-        <el-select v-model="cjList[0]" @change="getSsqSheng" placeholder="请选择省" clearable size="10">
-          <el-option
-              v-for="item in per"
-              :key="item.id"
-              :label="item.name"
-              :value="item.name">
-          </el-option>
-        </el-select>
-        <el-select v-model="cjList[1]" @change="getSsqShi" placeholder="请选择市" clearable size="10">
-          <el-option
-              v-for="item in shi"
-              :key="item.id"
-              :label="item.name"
-              :value="item.name">
-          </el-option>
-        </el-select>
-        <el-select v-model="cjList[2]" placeholder="请选择区" clearable size="10">
-          <el-option
-              v-for="item in qv"
-              :key="item.id"
-              :label="item.name"
-              :value="item.name">
-          </el-option>
-        </el-select>
+        <!--        <el-select v-model="cjList[0]" @change="getSsqSheng" placeholder="请选择省" clearable size="10">
+                  <el-option
+                      v-for="item in per"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name">
+                  </el-option>
+                </el-select>
+                <el-select v-model="cjList[1]" @change="getSsqShi" placeholder="请选择市" clearable size="10">
+                  <el-option
+                      v-for="item in shi"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name">
+                  </el-option>
+                </el-select>
+                <el-select v-model="cjList[2]" placeholder="请选择区" clearable size="10">
+                  <el-option
+                      v-for="item in qv"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name">
+                  </el-option>
+                </el-select>-->
+        <Ssq @getSsqName="getSsqVal"/>
       </el-form-item>
 
       <el-form-item>
@@ -113,7 +114,7 @@
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="省市区">
-                                    <el-select v-model="temp.sheng" @change="tempGetSheng" placeholder="请选择省"
+<!--                                    <el-select v-model="temp.sheng" @change="tempGetSheng" placeholder="请选择省"
                                                clearable size="10">
                                         <el-option
                                             v-for="item in per1"
@@ -138,9 +139,9 @@
                                             :label="item.name"
                                             :value="item.name">
                                         </el-option>
-                                    </el-select>
+                                    </el-select>-->
+                                  <Ssq @getSsqName="addSsqVal"/>
                                 </el-form-item>
-
                               <!-- <el-form-item label="时间">
                                    <el-date-picker
                                            v-model="pojo.createtime"
@@ -226,9 +227,11 @@
 
 <script>
 import axios from "axios";
+import Ssq from "@/components/Ssq.vue";
 
 export default {
   name: "list",
+  components: {Ssq},
   data() {
     return {
       forms: [], per: [], per1: [], shi: [], qv: [], qv1: [], shi1: [],
@@ -264,13 +267,19 @@ export default {
       shenhepojo: {},
       banli_dialogVisible: false,
       banlipojo: {},
-      cjList: []
+      cjList: [], ssq: '', addSsq: ''
     }
   },
   methods: {
+    getSsqVal(msg) {
+      console.log(msg)
+      this.ssq = msg
+    }, addSsqVal(msg) {
+      console.log(msg)
+      this.addSsq = msg
+    },
     shenheMethod(status) {
       console.log(this.shenhepojo)
-
       axios.post(`/notify/byIdStatus/${status}`, this.shenhepojo).then(res => {
         let result = res.data
         if (result.code === 200) {
@@ -320,7 +329,9 @@ export default {
       this.shenhepojo.userName = row.person
     },
     save() {
-      this.pojo.ssq = this.temp.sheng + '-' + this.temp.shi + '-' + this.temp.qv
+      // this.pojo.ssq = this.temp.sheng + '-' + this.temp.shi + '-' + this.temp.qv
+      this.pojo.ssq = this.addSsq
+      console.log(this.pojo)
       axios.post(`/clue/addPojo`, this.pojo).then(res => {
         let result = res.data
         if (result.code === 200) {
@@ -351,7 +362,8 @@ export default {
       this.pojo = {}
     },
     getTableData() {
-      this.query.ssq = this.cjList.join('-')
+      // this.query.ssq = this.cjList.join('-')
+      this.query.ssq = this.ssq
       axios.post(`clue/findAllTable/${this.searchMap.page}/${this.searchMap.size}`, this.query).then(res => {
         let result = res.data
         this.searchMap.tableData = result.rows

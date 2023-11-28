@@ -22,6 +22,7 @@ public class ClueController {
     public PageResult findAllTable(@PathVariable("page") Integer page
             , @PathVariable("size") Integer size
             , @RequestBody Clue clue) {
+        System.out.println("Clue:===" + clue);
         return clueService.findAllTable(page, size, clue);
     }
 
