@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jiyun.mapper.CartMapper">
+
+    <select id="getTableData" resultType="cn.jiyun.pojo.Cart">
+        select tc.*, tg.name goods, tg.price price
+        from db_goods.tb_cart tc
+                 left join db_goods.tb_goods tg on tc.gid = tg.id
+    </select>
+    <select id="getNumAndPrice" resultType="java.util.Map">
+        select sum(tc.num) num, sum(tg.price * tc.num) price
+        from db_goods.tb_cart tc
+                 left join db_goods.tb_goods tg on tc.gid = tg.id
+    </select>
+</mapper>

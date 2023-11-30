@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jiyun.mapper.GoodsMapper">
+
+    <select id="getTableData" resultType="cn.jiyun.pojo.Goods">
+        select tb.*,tc.name category
+        from db_goods.tb_goods tb
+        left join db_goods.tb_category tc on tb.cid = tc.id
+        <where>
+            <if test="name!=null and name!=''">and tb.name like concat('%',#{name},'%')</if>
+            <if test="cid!=null">and tb.cid = #{cid}</if>
+            <if test="id!=null">and tb.id = #{id}</if>
+        </where>
+    </select>
+</mapper>
