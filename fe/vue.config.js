@@ -3,10 +3,18 @@ module.exports = {
     devServer: {
         port: 80,
         proxy: {
-            '/api': {
-                target: 'http://localhost:8080/api',
+            '/user': {
+                target: 'http://localhost:8080/user',
                 changeOrigin: true,
-                pathRewrite: {'^/api': "/"}
+                pathRewrite: {'^/user': "/"}
+            }, '/apply': {
+                target: 'http://localhost:8080/apply',
+                changeOrigin: true,
+                pathRewrite: {'^/apply': "/"}
+            }, '/goods': {
+                target: 'http://localhost:8080/goods',
+                changeOrigin: true,
+                pathRewrite: {'^/goods': "/"}
             },
         }
     }

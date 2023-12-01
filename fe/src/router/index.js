@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '@/components/Home.vue'
+import Login from '@/components/Login.vue'
 import bar from '@/components/echarts/bar.vue'
 import pie from "@/components/echarts/pie.vue";
-
+import goods from "@/components/Goods.vue";
+import apply from "@/components/Apply.vue";
 Vue.use(VueRouter)
 
 const routes = [
@@ -17,8 +18,16 @@ const routes = [
         component: pie
     }, {
         path: '/',
-        name: 'home',
-        component: Home
+        name: 'login',
+        component: Login
+    },{
+        path: '/goods',
+        name: 'goods',
+        component: goods
+    },{
+        path: '/apply',
+        name: 'apply',
+        component: apply
     },
 
 ]
