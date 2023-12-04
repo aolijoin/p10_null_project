@@ -27,6 +27,7 @@ export default defineComponent({
         if (r.code === 200) {
           this.getTable()
           this.$message.success('添加成功')
+          this.dialogFormVisible=false
         }
       })
     }

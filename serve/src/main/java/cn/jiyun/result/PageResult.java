@@ -6,12 +6,12 @@ import java.util.List;
 
 public class PageResult<T> implements Serializable {
     private Long total;
-    private List rows;
+    private List<T> rows;
 
     public PageResult() {
     }
 
-    public PageResult(Long total, List rows) {
+    public PageResult(Long total, List<T> rows) {
         this.total = total;
         this.rows = rows;
     }
@@ -20,7 +20,7 @@ public class PageResult<T> implements Serializable {
         return total;
     }
 
-    public List getRows() {
+    public List<T> getRows() {
         return rows;
     }
 }

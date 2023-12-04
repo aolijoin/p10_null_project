@@ -62,8 +62,8 @@ export default {
       <el-table-column label="操作">
         <template slot-scope="scope">
           <span v-if="scope.row.goodsApplicantStatus===1">
-          <el-button type="primary" @click="tongGo(scope.row.id)">审批通过</el-button>
-          <el-button type="danger" @click="noTongGo(scope.row.id)">拒绝通过</el-button>
+          <el-button type="primary" size="mini" @click="tongGo(scope.row.id)">审批通过</el-button>
+          <el-button type="danger" size="mini" @click="noTongGo(scope.row.id)">拒绝通过</el-button>
           </span>
         </template>
       </el-table-column>
