@@ -27,13 +27,14 @@ export default {
       this.dialogFormVisible = true
       this.model.title = '添加用户'
       this.model.url = `/user/addUser`
+      this.form = {}
+      this.hobbys = []
     }, updatePage(row) {
       this.form = row
       this.hobbys = row.hobby.split(',')
       this.dialogFormVisible = true
       this.model.title = '修改'
       this.model.url = `/user/update`
-
     }, addUser() {
       console.log(this.form)
       console.log(this.hobbys)
@@ -42,6 +43,8 @@ export default {
         let result = res.data
         if (result.code === 200) {
           this.dialogFormVisible = false
+          // this.page.page = 1
+          // this.query.name=''
           this.getTableData()
         } else {
           this.$message.error(result.msg)
@@ -74,6 +77,7 @@ export default {
                 type: 'success',
                 message: '删除成功!'
               });
+              this.page.page = 1
               this.getTableData()
             } else {
               this.$message.error(result.msg)
@@ -100,10 +104,10 @@ export default {
 
 <template>
   <div id="home">
-    <el-input v-model="query.name" placeholder="输入名字"></el-input>
-    <el-button @click="getTableData">查询</el-button>
-    <el-button @click="goAddPage">添加</el-button>
-    <el-button @click="delList">批量删除</el-button>
+    <el-input v-model.trim="query.name" placeholder="输入名字"></el-input>
+    <el-button @click="getTableData" type="primary">查询</el-button>
+    <el-button @click="goAddPage" type="primary">添加</el-button>
+    <el-button @click="delList" type="danger">批量删除</el-button>
     <el-table :data="page.data" @selection-change="handleSelectionChange">
       <el-table-column type="selection"></el-table-column>
       <el-table-column prop="id" label="编号"></el-table-column>
@@ -136,7 +140,7 @@ export default {
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="年龄">
-          <el-input v-model="form.age" type="number" autocomplete="off"></el-input>
+          <el-input v-model.number="form.age" type="number" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="性别">
           <el-select v-model="form.sex" placeholder="请选择">
