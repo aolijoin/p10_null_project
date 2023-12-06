@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jiyun.mapper.ClueMapper">
+
+    <select id="getTableData" resultType="cn.jiyun.pojo.Clue">
+        select tc.*,
+        tf.name formname,
+        concat(
+        (select name from tb_ssq where id = tc.sheng) , '-'
+        ,(select name from tb_ssq where id = tc.shi), '-'
+        , (select name from tb_ssq where id = tc.qv) ) ssq
+            from p10_clue1.tb_clue tc
+        left join p10_clue1.tb_form tf on tc.form = tf.id
+        <where>
+            <if test="name!=null and name!=''">
+                and tc.name like concat('%',#{name},'%')
+            </if>
+            <if test="sheng!=null">
+                and tc.sheng = #{sheng}
+            </if>
+            <if test="shi!=null">
+                and tc.shi = #{shi}
+            </if>
+            <if test="qv!=null">
+                and tc.qv= #{qv}
+            </if>
+        </where>
+    </select>
+</mapper>

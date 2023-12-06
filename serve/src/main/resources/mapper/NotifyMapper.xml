@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jiyun.mapper.NotifyMapper">
+
+    <select id="selectList" parameterType="hashmap" resultType="cn.jiyun.pojo.Notify">
+        select tn.*,
+               concat(tn.person,', 您好, ',(select name
+                       from p10_clue1.tb_jl
+                       where id = tn.jl)) notify
+        from p10_clue1.tb_notify tn
+                 left join tb_jl tj on tn.jl = tj.id
+        <where>
+            <if test="name!=null and name!=''">
+                and tn.name like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+</mapper>
