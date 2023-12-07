@@ -10,7 +10,7 @@
                        from p10_clue1.tb_jl
                        where id = tn.jl)) notify
         from p10_clue1.tb_notify tn
-                 left join tb_jl tj on tn.jl = tj.id
+                 left join p10_clue1.tb_jl tj on tn.jl = tj.id
         <where>
             <if test="name!=null and name!=''">
                 and tn.name like concat('%',#{name},'%')
