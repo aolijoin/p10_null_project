@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 public class ClueController {
     @Resource
     private ClueService clueService;
-    //NPC
+    //NP C
 
     @RequestMapping("/getTable/{page}/{size}")
     public PageResult hello(@PathVariable("page") Integer page,

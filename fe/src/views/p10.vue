@@ -42,41 +42,14 @@
     <template>
       <el-table
           :data="page.tableData"
-          border style="width: 100%">
-        <el-table-column
-            prop="id"
-            label="id"
-            width="50">
-        </el-table-column>
-        <el-table-column
-            prop="code"
-            label="线索编号"
-            width="100">
-        </el-table-column>
-        <el-table-column
-            prop="name"
-            label="线索内容"
-            width="100">
-        </el-table-column>
-        <el-table-column
-            prop="formname"
-            label="线索来源"
-            width="180">
-        </el-table-column>
-        <el-table-column
-            prop="ssq"
-            label="省市区"
-            width="100">
-        </el-table-column>
-        <el-table-column
-            prop="person"
-            label="反映人"
-            width="180">
-        </el-table-column>
-        <el-table-column
-            prop="status"
-            label="审核状态"
-            width="180">
+          border style="width: 100%">
+        <el-table-column prop="id" label="id" width="50"></el-table-column>
+        <el-table-column prop="code" label="线索编号" width="100"></el-table-column>
+        <el-table-column prop="name" label="线索内容" width="100"></el-table-column>
+        <el-table-column prop="formname" label="线索来源" width="180"></el-table-column>
+        <el-table-column prop="ssq" label="省市区" width="100"></el-table-column>
+        <el-table-column prop="person" label="反映人" width="180"></el-table-column>
+        <el-table-column prop="status" label="审核状态" width="180">
           <template slot-scope="scope">
             {{ scope.row.status == 0 ? '待审核' : scope.row.status == 1 ? '已审核' : '已办结' }}
           </template>
@@ -84,11 +57,11 @@
 
         <el-table-column
             label="操作">
-          <template slot-scope="scope">    
+          <template slot-scope="scope">
             <el-button @click="dele(scope.row.id)" :disabled="scope.row.status!==0"  type="text"  size="small">删除
             </el-button>
-             
-            <el-button @click="shenhe(scope.row)"  type="text"  size="small">审核</el-button>
+            <el-button @click="shenhe(scope.row)" :disabled="scope.row.status!==0" type="text" size="small">审核
+            </el-button>
             <el-button @click="banli(scope.row)" :disabled="scope.row.status!==1"  type="text"  size="small">办结
             </el-button>
           </template>
@@ -183,66 +156,58 @@
     </el-dialog>
 
     <!--审核编辑框-->
-    <el-dialog
-        title="审核"
-        :visible.sync="shenhe_dialogVisible"
-        width="50%">
-                        <span>
-                            <el-form ref="form" label-width="100px">
-                                <el-input v-model="shenhepojo.id" type="hidden"></el-input>
-                                <el-form-item label="拒绝理由">
-                                    <el-input v-model.trim="shenhepojo.notify" placeholder="拒绝理由"
-                                    ></el-input>
-                                </el-form-item>
-                            </el-form>
-                        </span>
+    <el-dialog title="审核" :visible.sync="shenhe_dialogVisible" width="50%">
+      <span>
+        <el-form ref="form" label-width="100px">
+          <el-input v-model="shenhepojo.id" type="hidden"></el-input>
+          <el-form-item label="拒绝理由">
+            <el-input v-model.trim="shenhepojo.notify" placeholder="拒绝理由"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+      </span>
       <span slot="footer" class="dialog-footer">
-                            <el-button type="primary"
-                                       @click="shenheMethod(1)"
-                                       :disabled="shenhepojo.notify || shenhepojo.notify==null">审核通过</el-button>
-                            <el-button :disabled="!shenhepojo.notify"
-                                       @click="shenheMethod(0)">审核拒绝</el-button>
-                        </span>
+        <el-button type="primary" @click="shenheMethod(1)"
+                   :disabled="shenhepojo.notify || shenhepojo.notify==null">审核通过</el-button>
+        <el-button :disabled="!shenhepojo.notify" @click="shenheMethod(0)">审核拒绝</el-button>
+      </span>
     </el-dialog>
 
     <!--办结编辑框-->
-    <el-dialog
-        title="办理"
-        :visible.sync="banli_dialogVisible"
-        width="50%">
-                        <span>
-                            <el-form ref="form" label-width="100px">
-                                <el-input v-model="banlipojo.id" type="hidden"></el-input>
-                                <el-form-item label="基本案情:">
-                                    <el-input v-model="banlipojo.name" placeholder="线索名称"></el-input>
-                                </el-form-item>
-                                <el-form-item label="核处结论:">
-                                    <el-radio v-model="banlipojo.jl" label="1">经核实存在欠薪，已支付完毕</el-radio>
-                                    <el-radio v-model="banlipojo.jl"
-                                              label="2">尚未支付，准备或已申请法院强制执行</el-radio>
-                                    <el-radio v-model="banlipojo.jl"
-                                              label="3">尚未支付，涉嫌犯罪，已移送公安机关</el-radio>
-                                    <el-radio v-model="banlipojo.jl" label="4">已支付欠款或达成还款协议</el-radio>
-                                    <el-radio v-model="banlipojo.jl"
-                                              label="5">应当或者已经通过劳动争议仲裁解决，已告知反映人</el-radio>
-                                    <el-radio v-model="banlipojo.jl" label="6">经核实不存在欠薪情况</el-radio>
-                                </el-form-item>
-                                <el-form-item label=" 是否办结:">
-                                    <el-radio v-model="banlipojo.status" label="1">未办结</el-radio>
-                                    <el-radio v-model="banlipojo.status" label="2">已办结</el-radio>
-                                </el-form-item>
-                                 <el-form-item label="办结时间:">
-                                    <el-date-picker
-                                        v-model="banlipojo.createtime"
-                                        type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
-                                    </el-date-picker>
-                                </el-form-item>
-                            </el-form>
-                        </span>
+    <el-dialog title="办理" :visible.sync="banli_dialogVisible" width="50%">
+      <span>
+        <el-form ref="form" label-width="100px">
+          <el-input v-model="banlipojo.id" type="hidden"></el-input>
+          <el-form-item label="基本案情:">
+            <el-input v-model="banlipojo.name" placeholder="线索名称"></el-input>
+          </el-form-item>
+          <el-form-item label="核处结论:">
+            <el-radio v-model="banlipojo.jl" label="1">经核实存在欠薪，已支付完毕</el-radio>
+            <el-radio v-model="banlipojo.jl"
+                      label="2">尚未支付，准备或已申请法院强制执行</el-radio>
+            <el-radio v-model="banlipojo.jl"
+                      label="3">尚未支付，涉嫌犯罪，已移送公安机关</el-radio>
+            <el-radio v-model="banlipojo.jl" label="4">已支付欠款或达成还款协议</el-radio>
+            <el-radio v-model="banlipojo.jl"
+                      label="5">应当或者已经通过劳动争议仲裁解决，已告知反映人</el-radio>
+            <el-radio v-model="banlipojo.jl" label="6">经核实不存在欠薪情况</el-radio>
+          </el-form-item>
+          <el-form-item label=" 是否办结:">
+            <el-radio v-model="banlipojo.status" label="1">未办结</el-radio>
+            <el-radio v-model="banlipojo.status" label="2">已办结</el-radio>
+          </el-form-item>
+          <el-form-item label="办结时间:">
+            <el-date-picker
+                v-model="banlipojo.createtime"
+                type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
+            </el-date-picker>
+          </el-form-item>
+        </el-form>
+      </span>
       <span slot="footer" class="dialog-footer">
-                            <el-button type="primary" @click="banlisave()">保存</el-button>
-                            <el-button @click="banli_dialogVisible = false">取消</el-button>
-                        </span>
+        <el-button type="primary" @click="banlisave()">保存</el-button>
+        <el-button @click="banli_dialogVisible = false">取消</el-button>
+      </span>
     </el-dialog>
 
   </div>
@@ -321,15 +286,25 @@ export default {
       })
     },
     getShi() {
+      this.query.qv = ''
+      this.query.shi = ''
+      this.shiList = []
+      this.qvList = []
       this.$axios.post(`/commons/getSsq?id=${this.query.sheng}`).then(res => {
         this.shiList = res.data.data
       })
     }, getShi1() {
+      // this.pojo.shi = ''
+      // this.pojo.qv = ''
+      // this.shiList1 = []
+      // this.qvList = []
       this.$axios.post(`/commons/getSsq?id=${this.pojo.sheng}`).then(res => {
         this.shiList1 = res.data.data
       })
     },
     getQv() {
+      this.query.qv = ''
+      this.qvList = []
       this.$axios.post(`/commons/getSsq?id=${this.query.shi}`).then(res => {
         this.qvList = res.data.data
       })
@@ -341,7 +316,7 @@ export default {
     },
     add() {
       this.dialogVisible = true
-      this.pojo={}
+      this.pojo = {}
     }, save() {
       this.$axios.post(`/clue/saveClue`, this.pojo).then(res => {
         let r = res.data
@@ -368,12 +343,11 @@ export default {
         if (r.code === 200) {
           this.shenhe_dialogVisible = false
           this.getTable()
-          this.$message.success('修改成功');
+          this.$message.success('已拒绝');
         } else {
           this.$message.error(r.msg)
         }
       })
-
     },
     dele(id) {
       this.$axios.post(`/clue/dele?id=${id}`).then(res => {
