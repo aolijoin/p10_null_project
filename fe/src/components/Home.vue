@@ -6,7 +6,7 @@ export default {
     return {}
   }, methods: {
     test() {
-      this.$axios.post(`/api/hello`).then(res => {
+      this.$axios.post(`/api/api/hello`).then(res => {
         this.$message.success(res.data)
       })
     }

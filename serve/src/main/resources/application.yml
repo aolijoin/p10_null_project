@@ -4,6 +4,8 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+    servlet:
+      path: /api
   rabbitmq:
     host: 127.0.0.1        #rabbitmq的ip地址
     username: guest        #用户名
@@ -28,7 +30,7 @@ spring:
         min-idle: 0
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver #驱动
-    url: jdbc:mysql://127.0.0.1:3306/db_clue?useSSL=false #数据库地址
+    url: jdbc:mysql://127.0.0.1:3306/day_test?useSSL=false #数据库地址
     username: root #用户名
     password: root #密码
   # 允许循环依赖
