@@ -1,11 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import bao from '@/components/bao.vue'
 import bar from '@/components/echarts/bar.vue'
 import pie from "@/components/echarts/pie.vue";
-import Home from "@/views/Home.vue";
-import Login from "@/views/Login.vue";
-import Table from "@/views/Table.vue";
+import GoodsList from "@/components/GoodsList.vue";
+import GoodsAdd from "@/components/GoodsAdd.vue";
 
 Vue.use(VueRouter)
 
@@ -18,24 +16,16 @@ const routes = [
         path: '/pie',
         name: 'pie',
         component: pie
-    }, {
-        path: '/bao',
-        name: 'bao',
-        component: bao
-    }, {
-        path: '/login',
-        name: 'login',
-        component: Login
-    }, {
-        path: '/table',
-        name: 'Table',
-        component: Table
+    },  {
+        path: '/',
+        name: 'GoodsList',
+        component: GoodsList
     },
     {
-        path: '/',
-        name: 'home',
-        component: Home
-    },
+        path: '/GoodsAdd',
+        name: 'GoodsAdd',
+        component: GoodsAdd
+    }
 
 ]
 

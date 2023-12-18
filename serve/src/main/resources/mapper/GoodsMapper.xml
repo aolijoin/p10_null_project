@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jiyun.mapper.GoodsMapper">
+
+    <select id="queryDTO" resultType="cn.jiyun.pojo.Goods" parameterType="cn.jiyun.pojo.GoodsDTO">
+        select tg.*,ts.status status
+        from qutest.tb_goods tg
+        left join qutest.tb_status ts on tg.name = ts.id
+        <where>
+            <if test="user!=null and user!=''">and tg.city like concat('%',#{user},'%')</if>
+            <if test="start!=null  ">and tg.zdrg &gt;= #{start}</if>
+            <if test="end!=null  ">and tg.zdrg &lt;= #{end}</if>
+            <if test="status!=null and status!=''  ">and tg.name= #{status}</if>
+
+        </where>
+    </select>
+</mapper>

@@ -1,29 +1,57 @@
 package cn.jiyun.config;
 
-import cn.jiyun.mapper.StudentMapper;
-import cn.jiyun.pojo.Student;
+import cn.jiyun.mapper.GoodsMapper;
+import cn.jiyun.pojo.Goods;
 import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.security.Key;
+import java.util.List;
 
 @Slf4j
 @Component
 public class RabbitQueue {
-    private static final String KEY_ADD_STUDENT = "ADD_STUDENT";
+    private static final String KEY_QUEUE = "QUEUE";
+    private static final String KEY_TONGBU = "TONGBU";
     @Resource
-    private StudentMapper studentMapper;
+    private GoodsMapper goodsMapper;
+    @Resource
+    private RedisTemplate redisTemplate;
 
-    @RabbitListener(queuesToDeclare = @Queue(name = KEY_ADD_STUDENT, durable = "true"))
+    @RabbitListener(queuesToDeclare = @Queue(name = KEY_QUEUE, durable = "true"))
     public void rabbitQueue(Message message) {
         String messageString = new String(message.getBody());
-        Student student = JSONObject.parseObject(messageString, Student.class);
-        log.info("消息参数:{}", student);
-        log.info("添加行数:{}", studentMapper.insert(student));
+        System.out.println(messageString);
+        Goods goods = JSONObject.parseObject(messageString, Goods.class);
+        log.info("MQ接受的对象：{}", goods);
+//        log.info("MQ执行添加SQL：{}", goodsMapper.insert(goods));
+        List<Goods> goods1 = goodsMapper.selectList(null);
+
+        redisTemplate.delete(KEY_TONGBU);
+        for (Goods goods2 : goods1) {
+            redisTemplate.boundListOps(KEY_TONGBU).leftPush(goods2);
+        }
+        System.out.println("已同步到Redis中");
+    }
+
+    @Scheduled(cron = "0 */5 * * * *")
+    public void updateStatus() {
+        System.out.println("五分钟修改一次状态");
+        LambdaQueryWrapper<Goods> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Goods::getName, "3");
+        List<Goods> goods = goodsMapper.selectList(wrapper);
+        for (Goods good : goods) {
+            good.setName("4");
+            goodsMapper.updateById(good);
+        }
 
     }
 }
