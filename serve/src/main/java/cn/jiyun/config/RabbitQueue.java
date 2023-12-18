@@ -1,13 +1,17 @@
 package cn.jiyun.config;
 
+<<<<<<< HEAD
 import cn.jiyun.mapper.GoodsMapper;
 import cn.jiyun.pojo.Goods;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+=======
+>>>>>>> origin/master
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+<<<<<<< HEAD
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,10 +19,17 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.security.Key;
 import java.util.List;
+=======
+import org.springframework.stereotype.Component;
+
+import static cn.jiyun.config.Constant.QUEUE;
+
+>>>>>>> origin/master
 
 @Slf4j
 @Component
 public class RabbitQueue {
+<<<<<<< HEAD
     private static final String KEY_QUEUE = "QUEUE";
     private static final String KEY_TONGBU = "TONGBU";
     @Resource
@@ -53,5 +64,11 @@ public class RabbitQueue {
             goodsMapper.updateById(good);
         }
 
+=======
+    @RabbitListener(queuesToDeclare = @Queue(name = QUEUE, durable = "true"))
+    public void rabbitQueue(Message message) {
+        String messageString = new String(message.getBody());
+        log.info("队列消息:{}", messageString);
+>>>>>>> origin/master
     }
 }
